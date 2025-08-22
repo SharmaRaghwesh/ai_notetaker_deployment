@@ -1,13 +1,9 @@
-import os, asyncio, time, threading
+import asyncio, os, time, re, threading
 from playwright.async_api import async_playwright
+from recorder.py import record_audio
 from summarizer import transcribe_and_summarize
 
-# Only import recorder if running locally
-RUNNING_LOCALLY = os.getenv("RUNNING_LOCALLY", "true").lower() == "true"
-if RUNNING_LOCALLY:
-    from recorder import record_audio
-
-# ---------- Bot Checks participants ----------
+# ---------- Bot Checks participants to exit if no one there ----------
 async def get_participant_count(page):
     """
     Robustly fetch participant count from Google Meet UI.
@@ -36,7 +32,6 @@ async def get_participant_count(page):
         return len(people_nodes)
     except:
         return 0
-    ...
 
 # ---------- Meet Bot ----------
 async def run_bot(meet_url, output_wav, device_name, max_minutes, check_interval, leave_grace, args):
