@@ -9,7 +9,9 @@
 
 
 BOT_EMAIL=your_google_bot_email@gmail.com
+
 BOT_PASSWORD=your_google_bot_password
+
 GEMINI_API_KEY=your_gemini_api_key
 
 3. Install dependencies:
