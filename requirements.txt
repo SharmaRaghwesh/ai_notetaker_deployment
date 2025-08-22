@@ -1,0 +1,6 @@
+sounddevice
+wavio
+pydub
+google-generativeai
+playwright
+python-dotenv
