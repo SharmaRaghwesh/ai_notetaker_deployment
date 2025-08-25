@@ -4,6 +4,7 @@ FROM python:3.12-slim
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     portaudio19-dev \
+    playwright/
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
