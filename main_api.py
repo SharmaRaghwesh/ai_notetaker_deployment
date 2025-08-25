@@ -36,10 +36,10 @@ async def start_meeting(
 
 async def transcribe_and_summarize_endpoint(
     file: UploadFile = File(...),
-    api_key: str = os.getenv("GEMINI_API_KEY"),
     style: str = Form("business")
 ):
     try:
+        api_key = os.getenv("GEMINI_API_KEY")
         # save uploaded file temporarily
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
             tmp.write(await file.read())
