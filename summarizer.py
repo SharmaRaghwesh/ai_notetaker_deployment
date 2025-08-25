@@ -42,7 +42,8 @@ PROMPTS = {
         """
         }
 
-def transcribe_and_summarize(audio_file, api_key, style="business"):
+def transcribe_and_summarize(audio_file, style="business"):
+    api_key = os.getenv("GEMINI_API_KEY")       
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("gemini-1.5-flash")
     prompt = PROMPTS[style]
