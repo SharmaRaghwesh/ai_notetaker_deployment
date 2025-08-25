@@ -42,7 +42,9 @@ async def transcribe_and_summarize_endpoint(
         api_key = os.getenv("GEMINI_API_KEY")
         # save uploaded file temporarily
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
-            tmp.write(await file.read())
+            while chunk := await file.read(1024 * 1024):  # 1MB chunks
+                tmp.write(chunk)
+            # tmp.write(await file.read())
             tmp_path = tmp.name
 
         # run summarization
