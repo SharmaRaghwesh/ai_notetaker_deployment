@@ -1,6 +1,10 @@
-from fastapi import FastAPI, BackgroundTasks
+from fastapi import FastAPI, BackgroundTasks,UploadFile, File, Form
+from fastapi.responses import JSONResponse
 import asyncio
 from meetbot import run_bot
+from summarizer import transcribe_and_summarize
+import tempfile
+import os
 
 app = FastAPI(title="AI Notetaker API")
 
@@ -26,3 +30,25 @@ async def start_meeting(
         run_bot(meet_url, output_wav, device_name, max_minutes, check_interval, leave_grace, args)
     )
     return {"status": "Meeting bot started. Check logs for progress."}
+    
+# end point to upload and trascribe  using upload file
+@app.post("/transcribe/")
+
+async def transcribe_and_summarize_endpoint(
+    file: UploadFile = File(...),
+    api_key: str = os.getenv("GEMINI_API_KEY"),
+    style: str = Form("business")
+):
+    try:
+        # save uploaded file temporarily
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+            tmp.write(await file.read())
+            tmp_path = tmp.name
+
+        # run summarization
+        summary = transcribe_and_summarize(tmp_path, api_key, style)
+
+        return JSONResponse({"summary": summary})
+
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
