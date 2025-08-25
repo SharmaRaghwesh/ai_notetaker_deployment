@@ -131,7 +131,7 @@ async def run_bot(meet_url, output_wav, device_name, max_minutes, check_interval
         raise ValueError("Set GEMINI_API_KEY environment variable")
 
     print("🎙️ Sending audio to Gemini for transcription + summarization...")
-    notes = transcribe_and_summarize(output_wav, api_key,args)
+    notes = transcribe_and_summarize(output_wav,args)
     print("📄 Summarization complete!")
 
     with open("meeting_notes.md", "w") as f:
